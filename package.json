@@ -8,7 +8,7 @@
     "url": "git://github.com/beaucollins/node-simperium.git"
   },
   "scripts": {
-    "test": "`npm bin`/mocha --compilers js:babel-core/register test/**",
+    "test": "NODE_PATH=src `npm bin`/mocha --compilers js:babel-core/register test/**/**",
     "prepublish": "eslint . && `npm bin`/babel -q -d lib/ src/",
     "postinstall": "node scripts/install.js"
   },
