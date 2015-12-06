@@ -326,9 +326,7 @@ Channel.prototype.onAuth = function( data ) {
 				this.localQueue.start();
 				this.sendChangeVersionRequest( cv );
 			} else {
-				this.bucket.isIndexing = true;
-				this.bucket.emit( 'indexing' );
-				this.sendIndexRequest();
+				this.startIndexing();
 			}
 		};
 
@@ -378,6 +376,12 @@ Channel.prototype.onIndex = function( data ) {
 	}
 }
 ;
+
+Channel.prototype.startIndexing = function() {
+	this.bucket.isIndexing = true;
+	this.bucket.emit( 'indexing' );
+	this.sendIndexRequest();
+}
 
 Channel.prototype.sendIndexRequest = function( mark ) {
 	this.send( format( 'i:1:%s::10', mark ? mark : '' ) );
