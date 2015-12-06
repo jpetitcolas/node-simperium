@@ -217,6 +217,7 @@ export default function Channel( appid, access_token, bucket, store ) {
 	message.on( 'c', this.onChanges.bind( this ) );
 	message.on( 'e', this.onVersion.bind( this ) );
 	message.on( 'o', function() {} );
+	message.on( 'cv', this.onChangeVersion.bind( this ) );
 
 	this.networkQueue = new NetworkQueue();
 	this.localQueue = new LocalQueue( this.store );
@@ -394,7 +395,13 @@ Channel.prototype.onChanges = function( data ) {
 		onChange( change.id, change );
 	} );
 }
-;
+
+Channel.prototype.onChangeVersion = function( data ) {
+	if ( data === '?' ) {
+		// time to redownload the ghost storage and reindex
+		this.startIndexing()
+	}
+}
 
 Channel.prototype.onVersion = function( data ) {
 	var ghost = parseVersionMessage( data );
