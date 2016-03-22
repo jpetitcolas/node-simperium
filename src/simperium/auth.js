@@ -14,16 +14,12 @@ export default function Auth( appId, appSecret ) {
 inherits( Auth, EventEmitter );
 
 Auth.prototype.authorize = function( username, password ) {
-	var body = JSON.stringify( {username: username, password: password } ),
-		promise = this.request( 'authorize/', body );
-
-	return promise;
+	return this.request('authorize/', JSON.stringify({ username, password }));
 }
 
-// TODO: username and password to create a user
-Auth.prototype.create = function() {
-
-}
+Auth.prototype.create = function (username, password) {
+	return this.request('create/', JSON.stringify({ username, password }));
+};
 
 Auth.prototype.getUrlOptions = function( path ) {
 	const options = url.parse( format( '%s/%s/%s', URL, this.appId, path ) );
